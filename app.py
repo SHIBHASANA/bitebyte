@@ -1,5 +1,6 @@
 import os
 os.environ["CUDA_VISIBLE_DEVICES"] = ""
+
 from flask import Flask, request, jsonify
 from sentence_transformers import SentenceTransformer, util
 from flask_cors import CORS
@@ -7,14 +8,11 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-# Load your model (IMPORTANT)
-model = SentenceTransformer('paraphrase-MiniLM-L3-v2') 
-# If you saved model → use: SentenceTransformer("model")
+# Load lightweight model
+model = SentenceTransformer('paraphrase-MiniLM-L3-v2')
 
-# Your dataset (replace later if needed)
+# Dataset
 recipes = ["Masala dosa", "Idli", "Paneer butter masala", "Upma"]
-
-recipe_embeddings = model.encode(recipes)
 
 @app.route('/recommend', methods=['POST'])
 def recommend():
@@ -35,5 +33,7 @@ def recommend():
 def home():
     return "API is running"
 
+# ✅ FIXED PORT BINDING (IMPORTANT)
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
