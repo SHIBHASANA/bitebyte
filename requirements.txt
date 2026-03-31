@@ -1,7 +1,6 @@
 flask
 flask-cors
 sentence-transformers
-torch
-torch==2.0.1+cpu
+torch==2.0.1
 scikit-learn
 gunicorn
